@@ -4,6 +4,8 @@ import axios from 'axios'; // import axios
 import { FETCH_CACHE_HEADER } from 'next/dist/client/components/app-router-headers';
 import {useRouter} from 'next/router';
 import { parseISO, format } from 'date-fns';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Admin() {
     const router = useRouter();
@@ -140,7 +142,15 @@ export default function Admin() {
                         <input className="mt-2 w-full p-2 border rounded" name="points" type="number" placeholder="Points" onChange={handleChange} required />
                         <input className="mt-2 w-full p-2 border rounded" name="hours" type="number" placeholder="Hours" onChange={handleChange} required />
                         <input className="mt-2 w-full p-2 border rounded" name="code" maxLength="6" placeholder="Event Code" onChange={handleChange} required />
-                        <input className="mt-2 w-full p-2 border rounded" name="datetime" type="datetime-local" onChange={handleChange} required />
+                        <DatePicker
+                            selected={formState.datetime}
+                            onChange={date => setFormState({ ...formState, datetime: date })}
+                            showTimeSelect
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            timeCaption="time"
+                            dateFormat="MMMM d, yyyy h:mm aa"
+                        />
                         <input className="mt-2 w-full p-2 border rounded" name="address" placeholder="Address" onChange={handleChange} required />
                         <textarea className="mt-2 w-full p-2 border rounded" name="description" placeholder="Description" onChange={handleChange} required />
                         <button className="mt-2 w-full p-2 border rounded bg-blue-500 text-white" type="submit">Add Event</button>
