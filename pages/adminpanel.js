@@ -74,10 +74,7 @@ export default function Admin() {
     const handleNewEvent = (event) => {
         event.preventDefault();
         const token=window.localStorage.getItem("auth_token");
-        
-        if (formState.datetime instanceof Date) {
-            formState.datetime = formState.datetime.toISOString();
-        }
+        console.log(formState.datetime);
         const name=formState.name
         const points=formState.points
         const hours=formState.hours
@@ -142,15 +139,20 @@ export default function Admin() {
                         <input className="mt-2 w-full p-2 border rounded" name="points" type="number" placeholder="Points" onChange={handleChange} required />
                         <input className="mt-2 w-full p-2 border rounded" name="hours" type="number" placeholder="Hours" onChange={handleChange} required />
                         <input className="mt-2 w-full p-2 border rounded" name="code" maxLength="6" placeholder="Event Code" onChange={handleChange} required />
-                        <DatePicker
-                            selected={formState.datetime}
-                            onChange={date => setFormState({ ...formState, datetime: date })}
-                            showTimeSelect
-                            timeFormat="HH:mm"
-                            timeIntervals={15}
-                            timeCaption="time"
-                            dateFormat="MMMM d, yyyy h:mm aa"
-                        />
+                        <div className="mt-2 w-full p-2 border rounded">
+                        <label htmlFor="event-date" className="text-sm mr-3 font-bold text-gray-400">Event Date:</label>
+                            <DatePicker
+                                id="event-date"
+                                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                selected={formState.datetime}
+                                onChange={date => setFormState({ ...formState, datetime: date })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                timeCaption="time"
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                            />
+                        </div>
                         <input className="mt-2 w-full p-2 border rounded" name="address" placeholder="Address" onChange={handleChange} required />
                         <textarea className="mt-2 w-full p-2 border rounded" name="description" placeholder="Description" onChange={handleChange} required />
                         <button className="mt-2 w-full p-2 border rounded bg-blue-500 text-white" type="submit">Add Event</button>
