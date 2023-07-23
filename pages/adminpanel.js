@@ -127,7 +127,7 @@ export default function Admin() {
     }
 
     return (
-        <div>
+        <div className="bg-gray-200">
             <Navbar/>
             <div className="mx-auto px-4 sm:px-6 lg:px-8 py-5">
                 <div className="py-20">
