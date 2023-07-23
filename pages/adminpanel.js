@@ -131,9 +131,9 @@ export default function Admin() {
             <Navbar/>
             <div className="mx-auto px-4 sm:px-6 lg:px-8 py-5">
                 <div className="py-20">
-                    <h1 className="text-4xl font-bold">Admin Panel</h1>
+                    <h1 className="text-4xl font-bold text-dark-green">Admin Panel</h1>
 
-                    <h2 className="text-3xl font-bold mt-8">Event Management</h2>
+                    <h2 className="text-3xl font-bold mt-8 text-dark-grey">Event Management</h2>
                     <form className="mt-4" onSubmit={handleNewEvent}>
                         <input className="mt-2 w-full p-2 border text-dark-grey rounded" name="name" placeholder="Event Name" onChange={handleChange} required />
                         <input className="mt-2 w-full p-2 border text-dark-grey rounded" name="points" type="number" placeholder="Points" onChange={handleChange} required />
@@ -171,7 +171,7 @@ export default function Admin() {
                         ))}
                     </ul>
 
-                    <h2 className="text-3xl font-bold mt-8">SQL Command Execution</h2>
+                    <h2 className="text-3xl font-bold mt-8 text-dark-grey">SQL Command Execution</h2>
                     <form className="mt-4" onSubmit={handleExecuteSql}>
                         <textarea className="mt-2 w-full p-2 border text-dark-grey rounded" name="command" required />
                         <button className="mt-2 w-full p-2 border bg-primary-green hover:bg-dark-green text-white" type="submit">Execute</button>

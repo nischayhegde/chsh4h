@@ -43,7 +43,7 @@ const LoginPage = () => {
       <Navbar/>
       <div className="flex justify-center items-center min-h-screen px-4">
         <form onSubmit={handleLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-sm w-full">
-          <h2 className="mb-4 text-xl font-bold text-center">Log In</h2>
+          <h2 className="mb-4 text-xl font-bold text-center text-dark-green">Log In</h2>
           {renderInput("email", "Email", email, setEmail)}
           {renderInput("password", "Password", password, setPassword, true)}
           {error && <p className="text-red-500 text-xs italic">{error}</p>}
