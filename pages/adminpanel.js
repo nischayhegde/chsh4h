@@ -137,7 +137,7 @@ export default function Admin() {
                     <form className="mt-4" onSubmit={handleNewEvent}>
                         <input className="mt-2 w-full p-2 border rounded" name="name" placeholder="Event Name" onChange={handleChange} required />
                         <input className="mt-2 w-full p-2 border rounded" name="points" type="number" placeholder="Points" onChange={handleChange} required />
-                        <input className="mt-2 w-full p-2 border rounded" name="hours" type="number" placeholder="Hours" onChange={handleChange} required />
+                        <input className="mt-2 w-full p-2 border rounded" name="hours" type="number" placeholder="Volunteer Hours" onChange={handleChange} required />
                         <input className="mt-2 w-full p-2 border rounded" name="code" maxLength="6" placeholder="Event Code" onChange={handleChange} required />
                         <div className="mt-2 w-full p-2 border rounded">
                         <label htmlFor="event-date" className="text-sm mr-3 font-bold text-gray-400">Event Date:</label>
@@ -155,7 +155,7 @@ export default function Admin() {
                         </div>
                         <input className="mt-2 w-full p-2 border rounded" name="address" placeholder="Address" onChange={handleChange} required />
                         <textarea className="mt-2 w-full p-2 border rounded" name="description" placeholder="Description" onChange={handleChange} required />
-                        <button className="mt-2 w-full p-2 border rounded bg-blue-500 text-white" type="submit">Add Event</button>
+                        <button className="mt-2 w-full p-2 border rounded bg-primary-green hover:bg-dark-green text-white" type="submit">Add Event</button>
                     </form>
 
                     <ul className="mt-8">
@@ -173,7 +173,7 @@ export default function Admin() {
                     <h2 className="text-3xl font-bold mt-8">SQL Command Execution</h2>
                     <form className="mt-4" onSubmit={handleExecuteSql}>
                         <textarea className="mt-2 w-full p-2 border rounded" name="command" required />
-                        <button className="mt-2 w-full p-2 border rounded bg-blue-500 text-white" type="submit">Execute</button>
+                        <button className="mt-2 w-full p-2 border bg-primary-green hover:bg-dark-green text-white" type="submit">Execute</button>
                     </form>
                     {sqlResult && <pre className="mt-2 p-2 border rounded">{sqlResult}</pre>}
                     {sqlError && <p className="mt-2 p-2 border rounded bg-red-500 text-white">Error: {sqlError}</p>}

@@ -52,8 +52,8 @@ const Events = () => {
         eventid: eventId,
       });
       return response.data.status;
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.response.data.message);
     }
   }
 
@@ -68,8 +68,8 @@ const Events = () => {
       } else {
         setError("Could not sign up. Please try again.");
       }
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.response.data.message);
     }
   }
 
@@ -84,8 +84,8 @@ const Events = () => {
       } else {
         setError("Could not delete signup. Please try again.");
       }
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.response.data.message);
     }
   }
 
@@ -101,34 +101,35 @@ const Events = () => {
       } else {
         setError(response.data.message);  // Handle error messages sent from the backend
       }
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.response.data.message);
     }
   }
 
   return (
-    <div className="bg-gray-200 min-h-screen flex flex-col items-center pt-24 px-4 py-8">
-      <Navbar className="mb-4"/>
-      <h1 className="text-4xl font-bold text-blue-700 mb-8">Upcoming Events</h1>
-      <div className="flex flex-col lg:flex-row items-center w-full max-w-6xl">
-        <div className="mb-4 lg:mb-0 lg:w-1/2 lg:pr-8">
+    <div className="bg-gray-200 min-h-screen flex flex-col items-center pt-24 px-4 sm:px-8 py-8">
+      <Navbar />
+      <h1 className="text-4xl font-bold text-dark-green mb-8">Upcoming Events</h1>
+      <div className="flex flex-col lg:flex-row items-start w-full max-w-6xl">
+        <div className="w-full lg:w-1/2 mb-8 lg:mb-0 lg:pr-8">
           <Calendar
             onChange={setSelectedDate}
             value={selectedDate}
-            className="border rounded shadow p-4 mx-auto"
+            className="border rounded shadow p-4 mx-auto h-full"
             tileClassName={tileClassName}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:w-1/2 lg:pl-8">
           {eventsOnSelectedDate.map(event => (
             <div key={event.id} className="p-4 bg-white shadow-md rounded">
-              <h2 className="text-2xl font-semibold mb-2 text-blue-700">{event.name}</h2>
-              <p className="mb-4 text-lg text-gray-700">Description: {event.description}</p>
-              <p className="mb-4 text-lg text-gray-700">Date and Time: {format(event.datetime, 'yyyy-MM-dd HH:mm')}</p>
-              <p className="mb-4 text-lg text-gray-700">Address: {event.address}</p>
+              <h2 className="text-2xl font-semibold mb-2 text-dark-gray">{event.name}</h2>
+              <p className="mb-2 text-lg text-dark-gray">Description: {event.description}</p>
+              <p className="mb-2 text-lg text-dark-gray">Date and Time: {format(event.datetime, 'yyyy-MM-dd HH:mm')}</p>
+              <p className="mb-2 text-lg text-dark-gray">Volunteer Hours: {event.hours}</p>
+              <p className="mb-2 text-lg text-dark-gray">Address: {event.address}</p>
               {userLoggedIn && <>
                 {signups[event.id] === 'attended' || signups[event.id] === 'event finished' ?
-                  <p className="text-lg text-gray-700">{signups[event.id]}</p> :
+                  <p className="text-lg text-dark-gray">{signups[event.id]}</p> :
                   signups[event.id] === 'signed up' ?
                   <>
                     <input 
@@ -139,10 +140,10 @@ const Events = () => {
                       className="px-2 py-1 text-lg bg-white border rounded mb-2 w-full"
                       placeholder="Enter code"
                     />
-                    <button onClick={() => handleCodeSubmit(event.id)} className="px-6 py-2 text-lg text-white bg-blue-500 rounded hover:bg-blue-600 w-full">Mark as Attended</button>
+                    <button onClick={() => handleCodeSubmit(event.id)} className="px-6 py-2 text-lg text-white bg-dark-green rounded hover:bg-dark-gray w-full">Mark as Attended</button>
                     <button onClick={() => deleteSignup(event.id)} className="px-6 py-2 text-lg text-white bg-red-500 rounded hover:bg-red-600 w-full mt-2">Delete Signup</button>
                   </> :
-                  <button onClick={() => handleSignup(event.id)} className="px-6 py-2 text-lg text-white bg-green-500 rounded hover:bg-green-600 w-full">Sign up</button>
+                  <button onClick={() => handleSignup(event.id)} className="px-6 py-2 text-lg text-white bg-primary-green rounded hover:bg-dark-green w-full">Sign up</button>
                 }
                 {error && <p className="text-red-500 text-xs italic">{error}</p>}
                 </>

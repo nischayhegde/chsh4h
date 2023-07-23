@@ -30,7 +30,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between px-5 py-3 bg-blue-700 w-full fixed top-0 z-50">
+    <nav className="flex items-center justify-between px-5 py-3 bg-white w-full fixed top-0 z-50">
       <div className="flex items-center space-x-4">
         <Link href="/">
           <img src="/favicon.png" alt="Logo" className="h-12 cursor-pointer" />
@@ -52,7 +52,7 @@ function Navbar() {
       </div>
       <div className={`${isOpen ? "" : "hidden"} md:flex space-x-4`}>
         {links.map((link, index) => (
-          <Link href={link.href} key={index} className="text-gray-100 no-underline hover:text-gray-500">
+          <Link href={link.href} key={index} className="text-dark-green no-underline hover:text-dark-grey">
             {link.name}
           </Link>
         ))}

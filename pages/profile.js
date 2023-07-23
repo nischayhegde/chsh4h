@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { useRouter } from 'next/router'
 import { parseISO, format } from 'date-fns';
+import Link from 'next/link';
 
 const ProfilePage = (props) => {
     const [user, setUser] = useState({});
@@ -26,7 +27,10 @@ const ProfilePage = (props) => {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem('auth_token');
+        const token=window.localStorage.getItem("auth_token");
+        if(token!=null){
+            axios.post('https://h4api-9d2bafe7d30a.herokuapp.com/api/isauthenticated', {token : token}).then(response => {if(!response.data.authenticated){router.push("/login")}})
+        }
         axios.post('https://h4api-9d2bafe7d30a.herokuapp.com/api/getuserdata', {
             token: token
         })
@@ -99,35 +103,48 @@ const ProfilePage = (props) => {
     const signedUpEvents = events.filter(event => (signups[event.id] === 'signed up') || (signups[event.id] === 'attended'));
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="min-h-screen flex flex-col bg-gray-200">
             <Navbar/>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <h2 className="text-2xl font-semibold text-gray-700">User Profile</h2>
                 <div className="mt-4 text-lg text-gray-600">
-                    <div className="mb-2"><span className="font-medium text-gray-900">Name: </span>{user.name}</div>
-                    <div className="mb-2"><span className="font-medium text-gray-900">Email: </span>{user.email}</div>
-                    <div className="mb-4"><span className="font-medium text-gray-900">Officer: </span>{String(user.admin)}</div>
-                    <div className="mb-2"><span className="font-medium text-gray-900">Points: </span>{user.points}</div>
-                    <div className="mb-4"><span className="font-medium text-gray-900">Hours: </span>{user.hours}</div>
-                    <button 
-                        onClick={handleLogout} 
-                        className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded">
-                        Logout
-                    </button>
+                    <div className="mb-2"><span className="font-medium text-dark-green">Name: </span>{user.name}</div>
+                    <div className="mb-2"><span className="font-medium text-dark-green">Email: </span>{user.email}</div>
+                    <div className="mb-4"><span className="font-medium text-dark-green">Officer: </span>{String(user.admin)}</div>
+                    <div className="mb-2"><span className="font-medium text-dark-green">Points: </span>{user.points}</div>
+                    <div className="mb-4"><span className="font-medium text-dark-green">Volunteer Hours: </span>{user.hours}</div>
+                    <div className="flex flex-col">
+                        {user.admin &&
+                            <Link href="/adminpanel">
+                                <button
+                                    className="w-full sm:w-auto bg-dark-gray hover:bg-black text-white font-medium py-2 px-4 rounded">
+                                    Admin Panel
+                                </button>
+                            </Link>
+                        }
+                        <div>
+                            <button 
+                                onClick={handleLogout} 
+                                className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded mt-4">
+                                Logout
+                            </button>
+                        </div>
+                    </div>
                     {error && <p className="text-red-500 text-xs italic">{error}</p>}
                 </div>
 
-                <h2 className="text-2xl font-semibold text-gray-700 mt-8">My Events</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:w-1/2 lg:pl-8">
+                <h2 className="text-2xl font-semibold text-dark-gray mt-8">My Events</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {signedUpEvents.map(event => (
-                        <div key={event.id} className="p-4 bg-white shadow-md rounded">
-                            <h2 className="text-2xl font-semibold mb-2 text-blue-700">{event.name}</h2>
-                            <p className="mb-4 text-lg text-gray-700">Description: {event.description}</p>
-                            <p className="mb-4 text-lg text-gray-700">Date and Time: {format(event.datetime, 'yyyy-MM-dd HH:mm')}</p>
-                            <p className="mb-4 text-lg text-gray-700">Address: {event.address}</p>
+                        <div key={event.id} className="p-4 bg-white shadow-md mt-4 rounded-lg">
+                            <h2 className="text-xl font-semibold mb-2 text-dark-gray">{event.name}</h2>
+                            <p className="mb-2 text-lg text-dark-gray">Description: {event.description}</p>
+                            <p className="mb-2 text-lg text-dark-gray">Date and Time: {format(event.datetime, 'yyyy-MM-dd HH:mm')}</p>
+                            <p className="mb-2 text-lg text-dark-gray">Volunteer Hours: {event.hours}</p>
+                            <p className="mb-2 text-lg text-dark-gray">Address: {event.address}</p>
 
                             {signups[event.id] === 'attended' || signups[event.id] === 'event finished' ?
-                                <p className="text-lg text-gray-700">{signups[event.id]}</p> :
+                                <p className="text-lg text-dark-gray">{signups[event.id]}</p> :
                                 signups[event.id] === 'signed up' ?
                                 <>
                                     <input 
@@ -138,7 +155,7 @@ const ProfilePage = (props) => {
                                         className="px-2 py-1 text-lg bg-white border rounded mb-2 w-full"
                                         placeholder="Enter code"
                                     />
-                                    <button onClick={() => handleAttendEvent(event.id, codes[event.id])} className="px-6 py-2 text-lg text-white bg-blue-500 rounded hover:bg-blue-600 w-full">Mark as Attended</button>
+                                    <button onClick={() => handleAttendEvent(event.id, codes[event.id])} className="px-6 py-2 text-lg text-white bg-dark-green rounded hover:bg-dark-gray w-full">Mark as Attended</button>
                                     <button onClick={() => handleDeleteSignup(event.id)} className="px-6 py-2 text-lg text-white bg-red-500 rounded hover:bg-red-600 w-full mt-2">Delete Signup</button>
                                 </> :
                                 null
