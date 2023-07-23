@@ -135,15 +135,15 @@ export default function Admin() {
 
                     <h2 className="text-3xl font-bold mt-8">Event Management</h2>
                     <form className="mt-4" onSubmit={handleNewEvent}>
-                        <input className="mt-2 w-full p-2 border rounded" name="name" placeholder="Event Name" onChange={handleChange} required />
-                        <input className="mt-2 w-full p-2 border rounded" name="points" type="number" placeholder="Points" onChange={handleChange} required />
-                        <input className="mt-2 w-full p-2 border rounded" name="hours" type="number" placeholder="Volunteer Hours" onChange={handleChange} required />
-                        <input className="mt-2 w-full p-2 border rounded" name="code" maxLength="6" placeholder="Event Code" onChange={handleChange} required />
-                        <div className="mt-2 w-full p-2 border rounded">
+                        <input className="mt-2 w-full p-2 border text-dark-grey rounded" name="name" placeholder="Event Name" onChange={handleChange} required />
+                        <input className="mt-2 w-full p-2 border text-dark-grey rounded" name="points" type="number" placeholder="Points" onChange={handleChange} required />
+                        <input className="mt-2 w-full p-2 border text-dark-grey rounded" name="hours" type="number" placeholder="Volunteer Hours" onChange={handleChange} required />
+                        <input className="mt-2 w-full p-2 border text-dark-grey rounded" name="code" maxLength="6" placeholder="Event Code" onChange={handleChange} required />
+                        <div className="mt-2 w-full p-2 border text-dark-grey rounded">
                         <label htmlFor="event-date" className="text-sm mr-3 font-bold text-gray-400">Event Date:</label>
                             <DatePicker
                                 id="event-date"
-                                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full py-2 px-3 border border-gray-300 text-dark-grey bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 selected={formState.datetime}
                                 onChange={date => setFormState({ ...formState, datetime: date })}
                                 showTimeSelect
@@ -153,18 +153,18 @@ export default function Admin() {
                                 dateFormat="MMMM d, yyyy h:mm aa"
                             />
                         </div>
-                        <input className="mt-2 w-full p-2 border rounded" name="address" placeholder="Address" onChange={handleChange} required />
-                        <textarea className="mt-2 w-full p-2 border rounded" name="description" placeholder="Description" onChange={handleChange} required />
+                        <input className="mt-2 w-full p-2 border text-dark-grey rounded" name="address" placeholder="Address" onChange={handleChange} required />
+                        <textarea className="mt-2 w-full p-2 border text-dark-grey rounded" name="description" placeholder="Description" onChange={handleChange} required />
                         <button className="mt-2 w-full p-2 border rounded bg-primary-green hover:bg-dark-green text-white" type="submit">Add Event</button>
                     </form>
 
                     <ul className="mt-8">
                         {events.map(event => (
                             <li key={event.id} className="mt-2 p-2 border rounded">
-                                <p>{event.name} - {event.points} points, {event.hours} hours</p>
-                                <p>code: {event.code}</p>
-                                <p>{format(parseISO(event.datetime), 'yyyy-MM-dd HH:mm')}</p>
-                                <p>Status: {statuses[event.id] ? 'Finished' : 'Not Finished'}</p>
+                                <p className="text-dark-grey">{event.name} - {event.points} points, {event.hours} hours</p>
+                                <p className="text-dark-grey">code: {event.code}</p>
+                                <p className="text-dark-grey">{format(parseISO(event.datetime), 'yyyy-MM-dd HH:mm')}</p>
+                                <p className="text-dark-grey">Status: {statuses[event.id] ? 'Finished' : 'Not Finished'}</p>
                                 <button className="ml-4 p-2 border rounded bg-red-500 text-white" onClick={() => handleDeleteEvent(event.id)}>Delete</button>
                                 {!statuses[event.id] && <button className="ml-4 p-2 border rounded bg-yellow-500 text-white" onClick={() => handleMarkFinished(event.id)}>Mark as Finished</button>}
                             </li>
@@ -173,11 +173,11 @@ export default function Admin() {
 
                     <h2 className="text-3xl font-bold mt-8">SQL Command Execution</h2>
                     <form className="mt-4" onSubmit={handleExecuteSql}>
-                        <textarea className="mt-2 w-full p-2 border rounded" name="command" required />
+                        <textarea className="mt-2 w-full p-2 border text-dark-grey rounded" name="command" required />
                         <button className="mt-2 w-full p-2 border bg-primary-green hover:bg-dark-green text-white" type="submit">Execute</button>
                     </form>
-                    {sqlResult && <pre className="mt-2 p-2 border rounded">{sqlResult}</pre>}
-                    {sqlError && <p className="mt-2 p-2 border rounded bg-red-500 text-white">Error: {sqlError}</p>}
+                    {sqlResult && <pre className="mt-2 p-2 border rounded text-dark-grey">{sqlResult}</pre>}
+                    {sqlError && <p className="mt-2 p-2 border rounded bg-red-500 text-dark-grey">Error: {sqlError}</p>}
                 </div>
             </div>
         </div>
