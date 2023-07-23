@@ -162,6 +162,7 @@ export default function Admin() {
                         {events.map(event => (
                             <li key={event.id} className="mt-2 p-2 border rounded">
                                 <p>{event.name} - {event.points} points, {event.hours} hours</p>
+                                <p>code: {event.code}</p>
                                 <p>{format(parseISO(event.datetime), 'yyyy-MM-dd HH:mm')}</p>
                                 <p>Status: {statuses[event.id] ? 'Finished' : 'Not Finished'}</p>
                                 <button className="ml-4 p-2 border rounded bg-red-500 text-white" onClick={() => handleDeleteEvent(event.id)}>Delete</button>

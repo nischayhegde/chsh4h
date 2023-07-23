@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { parseISO, format } from 'date-fns';
 import Navbar from '../components/Navbar';
 
+const localizer = momentLocalizer(moment);
+
 const Events = () => {
   const [events, setEvents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [error, setError] = useState(null);
   const [signups, setSignups] = useState({});
   const [codes, setCodes] = useState({});
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     checkIfUserIsLoggedIn();
@@ -27,10 +30,6 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  const eventsOnSelectedDate = events.filter(event => format(event.datetime, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd'));
-
-  const datesWithEvents = events.map(event => format(event.datetime, 'yyyy-MM-dd'));
-
   const checkIfUserIsLoggedIn = async () => {
     const token = window.localStorage.getItem("auth_token");
     if (token) {
@@ -39,10 +38,15 @@ const Events = () => {
       }
   }
 
-  const tileClassName = ({ date, view }) => {
-    if (view === 'month' && datesWithEvents.includes(format(date, 'yyyy-MM-dd'))) {
-      return 'event-day';
-    }
+  const calendarEvents = events.map(event => ({
+    title: event.name,
+    start: event.datetime, // Assuming the event lasts for a day
+    end: event.datetime,
+    event // Include the original event object in the calendar event
+  }));
+
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event.event); // Save the original event object when a calendar event is clicked
   };
 
   const getEventStatus = async (eventId) => {
@@ -113,44 +117,44 @@ const Events = () => {
       <div className="flex flex-col lg:flex-row items-start w-full max-w-6xl">
         <div className="w-full lg:w-1/2 mb-8 lg:mb-0 lg:pr-8">
           <Calendar
-            onChange={setSelectedDate}
-            value={selectedDate}
-            className="border rounded shadow p-4 mx-auto h-full"
-            tileClassName={tileClassName}
+            localizer={localizer}
+            events={calendarEvents}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500 }}
+            onSelectEvent={handleSelectEvent}
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:w-1/2 lg:pl-8">
-          {eventsOnSelectedDate.map(event => (
-            <div key={event.id} className="p-4 bg-white shadow-md rounded">
-              <h2 className="text-2xl font-semibold mb-2 text-dark-gray">{event.name}</h2>
-              <p className="mb-2 text-lg text-dark-gray">Description: {event.description}</p>
-              <p className="mb-2 text-lg text-dark-gray">Date and Time: {format(event.datetime, 'yyyy-MM-dd HH:mm')}</p>
-              <p className="mb-2 text-lg text-dark-gray">Volunteer Hours: {event.hours}</p>
-              <p className="mb-2 text-lg text-dark-gray">Address: {event.address}</p>
+          {selectedEvent && (
+            <div key={selectedEvent.id} className="p-4 bg-white shadow-md rounded">
+              <h2 className="text-2xl font-semibold mb-2 text-dark-gray">{selectedEvent.name}</h2>
+              <p className="mb-2 text-lg text-dark-gray">Description: {selectedEvent.description}</p>
+              <p className="mb-2 text-lg text-dark-gray">Date and Time: {format(selectedEvent.datetime, 'yyyy-MM-dd HH:mm')}</p>
+              <p className="mb-2 text-lg text-dark-gray">Volunteer Hours: {selectedEvent.hours}</p>
+              <p className="mb-2 text-lg text-dark-gray">Address: {selectedEvent.address}</p>
               {userLoggedIn && <>
-                {signups[event.id] === 'attended' || signups[event.id] === 'event finished' ?
-                  <p className="text-lg text-dark-gray">{signups[event.id]}</p> :
-                  signups[event.id] === 'signed up' ?
+                {signups[selectedEvent.id] === 'attended' || signups[selectedEvent.id] === 'event finished' ?
+                  <p className="text-lg text-dark-gray">{signups[selectedEvent.id]}</p> :
+                  signups[selectedEvent.id] === 'signed up' ?
                   <>
                     <input 
                       type="text" 
                       maxLength="6"
-                      value={codes[event.id] || ''}
-                      onChange={(e) => setCodes({...codes, [event.id]: e.target.value})}
+                      value={codes[selectedEvent.id] || ''}
+                      onChange={(e) => setCodes({...codes, [selectedEvent.id]: e.target.value})}
                       className="px-2 py-1 text-lg bg-white border rounded mb-2 w-full"
                       placeholder="Enter code"
                     />
-                    <button onClick={() => handleCodeSubmit(event.id)} className="px-6 py-2 text-lg text-white bg-dark-green rounded hover:bg-dark-gray w-full">Mark as Attended</button>
-                    <button onClick={() => deleteSignup(event.id)} className="px-6 py-2 text-lg text-white bg-red-500 rounded hover:bg-red-600 w-full mt-2">Delete Signup</button>
+                    <button onClick={() => handleCodeSubmit(selectedEvent.id)} className="px-6 py-2 text-lg text-white bg-dark-green rounded hover:bg-dark-gray w-full">Mark as Attended</button>
+                    <button onClick={() => deleteSignup(selectedEvent.id)} className="px-6 py-2 text-lg text-white bg-red-500 rounded hover:bg-red-600 w-full mt-2">Delete Signup</button>
                   </> :
-                  <button onClick={() => handleSignup(event.id)} className="px-6 py-2 text-lg text-white bg-primary-green rounded hover:bg-dark-green w-full">Sign up</button>
+                  <button onClick={() => handleSignup(selectedEvent.id)} className="px-6 py-2 text-lg text-white bg-primary-green rounded hover:bg-dark-green w-full">Sign up</button>
                 }
                 {error && <p className="text-red-500 text-xs italic">{error}</p>}
                 </>
               }
             </div>
-          ))}
-        </div>
+          )}
       </div>
     </div>
   );

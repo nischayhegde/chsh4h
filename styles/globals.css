@@ -26,7 +26,26 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-/* App.css */
-.event-day {
-  background-color: #00ff1a !important; /* bg-red-300 in Tailwind */
+
+.rbc-calendar {
+  background-color: white;
+  border-radius: 15px;
+}
+
+.rbc-header {
+  background-color: #27AE60;
+  color: white;
+  padding: 10px 0;
+  border-radius: 15px 15px 0 0;
+}
+
+.rbc-today {
+  background-color: #ddf4dd;
+}
+
+.rbc-event {
+  background-color: #2C3E50;
+  color: white;
+  border-radius: 5px;
+  padding: 2px 5px;
 }
