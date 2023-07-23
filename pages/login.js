@@ -56,7 +56,7 @@ const LoginPage = () => {
             </button>
           </div>
           <Link href="/signup" className="hover:text-dark-grey focus:text-dark-grey">
-            <p className="mt-3 text-s bg-gray-100 rounded-md text-center">
+            <p className="mt-3 text-s bg-gray-100 rounded-md text-center text-dark-grey hover:text-black focus:text-black">
               Don't have an account? Click Here!{' '}
             </p>
           </Link>

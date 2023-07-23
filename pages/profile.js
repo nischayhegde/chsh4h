@@ -105,8 +105,8 @@ const ProfilePage = (props) => {
     return (
         <div className="min-h-screen flex flex-col bg-gray-200">
             <Navbar/>
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <h2 className="text-2xl font-semibold text-dark-green">User Profile</h2>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-12">
+                <h2 className="text-2xl font-semibold text-dark-gray">-User Profile-</h2>
                 <div className="mt-4 text-lg text-gray-600">
                     <div className="mb-2"><span className="font-medium text-dark-green">Name: </span>{user.name}</div>
                     <div className="mb-2"><span className="font-medium text-dark-green">Email: </span>{user.email}</div>
